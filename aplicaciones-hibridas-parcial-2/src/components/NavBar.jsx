@@ -16,7 +16,7 @@ const NavBar = () => {
     const { user, token, logout } = useAuth();
     return (
 
-        <Navbar position="static">
+        <Navbar isBordered variant="sticky">
             <NavbarBrand>
                 {/* <img src="" alt="My App Logo" className="h-12 w-12mr-2" /> */}
 
