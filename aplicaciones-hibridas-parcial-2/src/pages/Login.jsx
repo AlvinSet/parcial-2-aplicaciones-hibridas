@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button, Card, CardBody} from '@nextui-org/react';
+import { useAuth } from '../context/AuthContext'; 
 
 const Login = () => {
+    const { login } = useAuth();
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleLogin = async () => {
         const response = await fetch('http://localhost:3000/apiHotel/users/login', {
@@ -14,11 +17,13 @@ const Login = () => {
             body: JSON.stringify({ email, password })
         });
         const data = await response.json();
+        console.log("Response from server on login:", data);
         if (response.ok) {
-            localStorage.setItem('token', data.token);
+            login(data.data.token, data.data.user);
             navigate('/');
         } else {
             alert(data.message);
+            setError(data.message); 
         }
     };
 
