@@ -17,9 +17,10 @@ const Login = () => {
             body: JSON.stringify({ email, password })
         });
         const data = await response.json();
-        console.log("Response from server on login:", data);
+        console.log("Login successful. Token:", data.token);
+        console.log("User details:", data.user);
         if (response.ok) {
-            login(data.data.token, data.data.user);
+            login(data.token, data.user);
             navigate('/');
         } else {
             alert(data.message);
