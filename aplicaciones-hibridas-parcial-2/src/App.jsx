@@ -6,23 +6,30 @@ import Register from "./pages/Register";
 import NavBar from './components/NavBar';
 import './App.css'
 import UserProfile from './pages/UserProfile';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
     <>
+    <AuthProvider>
     <BrowserRouter>
-    <NavBar></NavBar>
+    <NavBar></NavBar> 
     <Routes>
     <Route path='/' element={<Home/>} />
     <Route path="/register" element={<Register />} />
     <Route path="/login" element={<Login />} />
-    <Route path="/profile" element={<UserProfile />} />
-
+    <Route path="/profile" element={
+            <ProtectedRoute>
+              <UserProfile />
+            </ProtectedRoute>
+          } />
     </Routes>
 
     </BrowserRouter>
+    </AuthProvider>
     </>
   )
 }

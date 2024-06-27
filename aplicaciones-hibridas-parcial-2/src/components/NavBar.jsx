@@ -1,5 +1,5 @@
 import React from 'react';
-// import logo from '../assets/logonavbar.png';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
     Button, Navbar,
@@ -14,6 +14,13 @@ import {
 const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const { user, token, logout } = useAuth();
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login'); // Redirige al usuario a la página de inicio de sesión
+    };
     return (
 
         <Navbar isBordered variant="sticky">
@@ -46,7 +53,7 @@ const NavBar = () => {
                             <Link href="/profile" className="text-brand-white">Mi Perfil</Link>
                         </NavbarItem>
                         <NavbarItem>
-                            <Button onClick={logout}>
+                            <Button onClick={handleLogout}>
                                 Salir
                             </Button>
                         </NavbarItem>
