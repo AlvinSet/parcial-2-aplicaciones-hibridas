@@ -2,75 +2,89 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Card, CardBody, Button } from '@nextui-org/react';
 
+
 const ListBookings = () => {
     const { token } = useAuth();
     const [bookings, setBookings] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchBookings = async () => {
-            setLoading(true);
             try {
                 const response = await fetch('http://localhost:3000/apiHotel/bookings', {
                     headers: { 'Authorization': token }
                 });
-
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-
                 const data = await response.json();
                 setBookings(data);
             } catch (error) {
                 console.error('Error fetching bookings:', error);
-                setError('Error fetching bookings or no bookings available');
-                setBookings([]);
-            } finally {
-                setLoading(false);
+                setError('Error fetching bookings');
             }
         };
-
         fetchBookings();
     }, [token]);
 
-    if (loading) {
-        return <p>Loading...</p>;
+    const handleStatusChange = (id, newStatus) => {
+        setBookings(bookings.map(booking => 
+            booking._id === id ? { ...booking, status: newStatus } : booking
+        ));
+    };
+
+    const handleUpdate = async (id) => {
+        const booking = bookings.find(b => b._id === id);
+        try {
+            const response = await fetch(`http://localhost:3000/apiHotel/bookings/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: booking.status })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            setBookings(bookings.map(b => (b._id === id ? data : b)));
+        } catch (error) {
+            console.error('Error updating booking:', error);
+            setError('Error updating booking');
+        }
+    };
+
+    if (!bookings.length) {
+        return <p>No bookings available</p>;
     }
 
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
-            <h1 className="text-3xl font-bold mb-6">All Bookings</h1>
+            <h1 className="text-3xl font-bold mb-6">Bookings</h1>
             {error && <p className="text-red-500 mb-4">{error}</p>}
-            {bookings.length === 0 ? (
-                <p>No bookings available</p>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-6xl">
-                    {bookings.map((booking) => (
-                        <Card key={booking._id} className="w-full">
-                            <CardBody>
-                                <h2 className="text-xl font-bold">Booking ID: {booking._id}</h2>
-                                <p><strong>Client:</strong> {booking.client.name}</p>
-                                <p><strong>Room:</strong> {booking.room.number} - {booking.room.type}</p>
-                                <p><strong>Start Date:</strong> {new Date(booking.startDate).toLocaleDateString()}</p>
-                                <p><strong>End Date:</strong> {new Date(booking.endDate).toLocaleDateString()}</p>
-                                <p><strong>Total Price:</strong> ${booking.totalPrice}</p>
-                                <p><strong>Status:</strong> {booking.status}</p>
-                                {booking.services.length > 0 && (
-                                    <div>
-                                        <p><strong>Services:</strong></p>
-                                        <ul>
-                                            {booking.services.map(service => (
-                                                <li key={service._id}>{service.name}</li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                            </CardBody>
-                        </Card>
-                    ))}
-                </div>
-            )}
+            {bookings.map((booking) => (
+                <Card key={booking._id} className="w-full max-w-lg mb-6">
+                    <CardBody>
+                        <p>Client: {booking.client.name}</p>
+                        <p>Room: {booking.room.number}</p>
+                        <p>Start Date: {booking.startDate}</p>
+                        <p>End Date: {booking.endDate}</p>
+                        <p>Total Price: ${booking.totalPrice}</p>
+                        <select
+                            value={booking.status}
+                            onChange={(e) => handleStatusChange(booking._id, e.target.value)}
+                        >
+                            <option value="booked">Booked</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                        <Button onClick={() => handleUpdate(booking._id)}>Update Status</Button>
+                    </CardBody>
+                </Card>
+            ))}
         </div>
     );
 };
