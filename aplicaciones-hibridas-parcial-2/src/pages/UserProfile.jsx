@@ -4,7 +4,7 @@ import { Card, CardBody, Button } from '@nextui-org/react';
 
 const UserProfile = () => {
     const { user,token } = useAuth();
-    console.log("User data in UserProfile:", user);
+    // console.log("User data in UserProfile:", user);
     
     if (!user) {
         return <p>Loading...</p>;

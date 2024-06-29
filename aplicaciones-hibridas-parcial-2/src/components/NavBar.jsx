@@ -32,9 +32,6 @@ const NavBar = () => {
                 <NavbarItem>
                     <Link href="/" color="foreground">Inicio</Link>
                 </NavbarItem>
-                <NavbarItem>
-                    <Link href="/services" className="text-brand-white">Servicios</Link>
-                </NavbarItem>
 
                 {!token && (
                     <>
@@ -48,6 +45,12 @@ const NavBar = () => {
                 )}
                 {token && (
                     <>
+                        <NavbarItem>
+                            <Link href="/admin/services" className="text-brand-white">Admin Servicios</Link>
+                        </NavbarItem>
+                        <NavbarItem>
+                            <Link href="/admin/rooms" className="text-brand-white">Admin Habitaciones</Link>
+                        </NavbarItem>
 
                         <NavbarItem>
                             <Link href="/profile" className="text-brand-white">Mi Perfil</Link>

@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (token) {
             localStorage.setItem('token', token);
-            // console.log("Token guardado en localStorage:", token);
+            console.log("Token guardado en localStorage:", token);
             // Aquí podrías añadir lógica para validar el token con el servidor o decodificarlo
         } else {
             localStorage.removeItem('token');
