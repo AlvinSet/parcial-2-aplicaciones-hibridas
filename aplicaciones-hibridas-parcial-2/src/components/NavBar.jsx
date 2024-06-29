@@ -45,6 +45,12 @@ const NavBar = () => {
                 )}
                 {token && (
                     <>
+                    <NavbarItem>
+                            <Link href="/bookings/create" className="text-brand-white">Reservar</Link>
+                        </NavbarItem>
+                        <NavbarItem>
+                            <Link href="/bookings/list" className="text-brand-white">Reservas</Link>
+                        </NavbarItem>
                         <NavbarItem>
                             <Link href="/admin/services" className="text-brand-white">Admin Servicios</Link>
                         </NavbarItem>

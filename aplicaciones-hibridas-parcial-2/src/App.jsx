@@ -7,6 +7,8 @@ import NavBar from './components/NavBar';
 import './App.css'
 import UserProfile from './pages/UserProfile';
 import AdminServices from './pages/AdminServices';
+import CreateBooking from './pages/CreateBooking';
+import ListBookings from './pages/ListBookings';
 import AdminRooms from './pages/AdminRooms';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -30,6 +32,8 @@ function App() {
             } />
             <Route path="/admin/services" element={<ProtectedRoute><AdminServices /></ProtectedRoute>} />
             <Route path="/admin/rooms" element={<ProtectedRoute><AdminRooms /></ProtectedRoute>} />
+            <Route path="/bookings/create" element={<ProtectedRoute><CreateBooking /></ProtectedRoute>} />
+            <Route path="/bookings/list" element={<ProtectedRoute><ListBookings /></ProtectedRoute>} />
           </Routes>
 
         </BrowserRouter>
