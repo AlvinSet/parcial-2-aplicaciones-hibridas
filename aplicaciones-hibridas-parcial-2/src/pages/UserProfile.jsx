@@ -1,13 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Card, CardBody, Button } from '@nextui-org/react';
 
 const UserProfile = () => {
-    const { user,token } = useAuth();
-    // console.log("User data in UserProfile:", user);
-    
-    if (!user) {
+    const { token, setUser } = useAuth(); // Usamos setUser para actualizar el contexto
+    const [profile, setProfile] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/apiHotel/users/profile', {
+                    headers: { 'Authorization': token } // Usamos solo el token sin Bearer
+                });
+
+                if (response.ok) {
+                    const updatedUser = await response.json();
+                    setProfile(updatedUser);
+                    setUser(updatedUser); // Actualizar el contexto de autenticación
+                } else {
+                    throw new Error('Failed to fetch profile');
+                }
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProfile();
+    }, [token, setUser]);
+
+    if (loading) {
         return <p>Loading...</p>;
+    }
+
+    if (!profile) {
+        return <p>Error loading profile</p>;
     }
 
     return (
@@ -15,14 +44,14 @@ const UserProfile = () => {
             <Card className="max-w-2xl w-full bg-white bg-opacity-90 shadow-lg rounded-lg">
                 <h1 className="text-center text-3xl font-bold text-gray-900 mb-8">User Profile</h1>
                 <CardBody>
-                    <p className="text-lg"><strong>Name:</strong> {user.name}</p>
-                    <p className="text-lg"><strong>Email:</strong> {user.email}</p>
-                    <p className="text-lg"><strong>Phone:</strong> {user.phone}</p>
+                    <p className="text-lg"><strong>Name:</strong> {profile.name}</p>
+                    <p className="text-lg"><strong>Email:</strong> {profile.email}</p>
+                    <p className="text-lg"><strong>Phone:</strong> {profile.phone}</p>
 
-                    {user.bookings && user.bookings.length > 0 ? (
+                    {profile.bookings && profile.bookings.length > 0 ? (
                         <div>
                             <h2 className="text-2xl font-bold mt-6">Bookings</h2>
-                            {user.bookings.map((booking) => (
+                            {profile.bookings.map((booking) => (
                                 <div key={booking._id} className="border rounded-lg p-4 mt-4">
                                     <p><strong>Room:</strong> {booking.room.number} ({booking.room.type})</p>
                                     <p><strong>Start Date:</strong> {new Date(booking.startDate).toLocaleDateString()}</p>
