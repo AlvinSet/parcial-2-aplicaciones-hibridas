@@ -12,8 +12,8 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (token) {
             localStorage.setItem('token', token);
-            console.log("Token guardado en localStorage:", token);
-            // Aquí podrías añadir lógica para validar el token con el servidor o decodificarlo
+            // console.log("Token guardado en localStorage:", token);
+            
         } else {
             localStorage.removeItem('token');
         }
@@ -22,18 +22,17 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (user) {
             localStorage.setItem('user', JSON.stringify(user));
-            console.log("User guardado en localStorage:", user);
+            // console.log("User guardado en localStorage:", user);
         } else {
             localStorage.removeItem('user');
         }
     }, [user]);
 
     const login = (token, user) => {
-        console.log("Setting new token from login:", token);
-        console.log("Setting user details from login:", user);
+        // console.log("Setting new token from login:", token);
+        // console.log("Setting user details from login:", user);
         setToken(token);
         setUser(user);
-        // setUser con la información del usuario si es necesario
     };
 
     const logout = () => {

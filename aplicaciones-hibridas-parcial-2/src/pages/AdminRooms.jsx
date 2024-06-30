@@ -13,7 +13,7 @@ const AdminRooms = () => {
         const fetchRooms = async () => {
             setLoading(true);
             try {
-                console.log("Sending token:", token);  // Agrega este log
+                // console.log("Sending token:", token);  
                 const response = await fetch('http://localhost:3000/apiHotel/rooms', {
                     headers: { 'Authorization': token }
                 });
