@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Card, CardBody, Button } from '@nextui-org/react';
-
+import { toast } from 'react-toastify';
 
 const ListBookings = () => {
     const { token } = useAuth();
@@ -51,9 +51,11 @@ const ListBookings = () => {
 
             const data = await response.json();
             setBookings(bookings.map(b => (b._id === id ? data : b)));
+            toast.success('Booking status updated successfully!');
         } catch (error) {
             console.error('Error updating booking:', error);
             setError('Error updating booking');
+            toast.error('Error updating booking');
         }
     };
 

@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Home from "./pages/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NavBar from './components/NavBar';
@@ -35,6 +37,7 @@ function App() {
             <Route path="/bookings/create" element={<ProtectedRoute><CreateBooking /></ProtectedRoute>} />
             <Route path="/bookings/list" element={<ProtectedRoute><ListBookings /></ProtectedRoute>} />
           </Routes>
+          <ToastContainer />
 
         </BrowserRouter>
       </AuthProvider>

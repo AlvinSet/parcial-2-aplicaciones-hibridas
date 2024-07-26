@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Input, Button, Card, CardBody } from '@nextui-org/react';
+import { toast } from 'react-toastify';
 
 const CreateBooking = () => {
     const { token, user } = useAuth();
@@ -91,9 +92,11 @@ const CreateBooking = () => {
             const data = await response.json();
             console.log('Booking Created:', data);
             setForm({ roomId: '', startDate: '', endDate: '', services: [], totalPrice: 0 });
+            toast.success('Booking created successfully!');
         } catch (error) {
             console.error('Error creating booking:', error);
             setError('Error creating booking');
+            toast.error('Error creating booking');
         }
     };
 
