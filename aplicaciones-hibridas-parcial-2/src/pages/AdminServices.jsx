@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Input, Button, Card, CardBody } from '@nextui-org/react';
+import { toast } from 'react-toastify';
 
 const AdminServices = () => {
     const { token } = useAuth();
@@ -48,9 +49,13 @@ const AdminServices = () => {
             const data = await response.json();
             setServices([...services, data]);
             setForm({ name: '', description: '', price: '' });
+            toast.success('Service created successfully!');
+
         } catch (error) {
             console.error('Error creating service:', error);
             setError('Error creating service');
+            toast.error('Error creating service');
+
         }
     };
 

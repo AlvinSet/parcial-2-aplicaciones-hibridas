@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Input, Button, Card, CardBody } from '@nextui-org/react';
+import { toast } from 'react-toastify';
+
 
 const AdminRooms = () => {
     const { token } = useAuth();
@@ -59,9 +61,13 @@ const AdminRooms = () => {
             const data = await response.json();
             setRooms([...rooms, data]);
             setForm({ number: '', type: '', pricePerNight: '', amenities: '' });
+            toast.success('Room created successfully!');
+
         } catch (error) {
             console.error('Error creating room:', error);
             setError('Error creating room');
+            toast.error('Error creating room');
+
         }
     };
 
@@ -83,6 +89,8 @@ const AdminRooms = () => {
 
             const data = await response.json();
             setRooms(rooms.map(room => (room._id === id ? data : room)));
+            toast.info('Room updated successfully!');
+
         } catch (error) {
             console.error('Error updating room:', error);
             setError('Error updating room');
@@ -102,9 +110,12 @@ const AdminRooms = () => {
             }
 
             setRooms(rooms.filter(room => room._id !== id));
+            toast.warning('Room was deleted');
         } catch (error) {
             console.error('Error deleting room:', error);
             setError('Error deleting room');
+            toast.error('Error deleting room');
+
         }
     };
 

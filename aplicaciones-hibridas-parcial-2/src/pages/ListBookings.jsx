@@ -51,7 +51,7 @@ const ListBookings = () => {
 
             const data = await response.json();
             setBookings(bookings.map(b => (b._id === id ? data : b)));
-            toast.success('Booking status updated successfully!');
+            toast.info('Booking status updated successfully!');
         } catch (error) {
             console.error('Error updating booking:', error);
             setError('Error updating booking');
