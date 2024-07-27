@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Card, CardBody, Button } from '@nextui-org/react';
 import { toast } from 'react-toastify';
+import { format } from 'date-fns';
 
 const ListBookings = () => {
     const { token } = useAuth();
@@ -72,8 +73,8 @@ const ListBookings = () => {
                     <CardBody>
                         <p>Client: {booking.client.name}</p>
                         <p>Room: {booking.room.number}</p>
-                        <p>Start Date: {booking.startDate}</p>
-                        <p>End Date: {booking.endDate}</p>
+                        <p>Start Date: {format(new Date(booking.startDate), 'dd MMM yyyy')}</p>
+                        <p>End Date: {format(new Date(booking.endDate), 'dd MMM yyyy')}</p>
                         <p>Total Price: ${booking.totalPrice}</p>
                         <select
                             value={booking.status}

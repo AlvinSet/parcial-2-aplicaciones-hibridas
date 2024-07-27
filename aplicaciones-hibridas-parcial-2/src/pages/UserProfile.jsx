@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Card, CardBody, Button } from '@nextui-org/react';
+import { format } from 'date-fns';
 
 const UserProfile = () => {
     const { token, setUser } = useAuth(); // Usamos setUser para actualizar el contexto
@@ -54,16 +55,17 @@ const UserProfile = () => {
                             {profile.bookings.map((booking) => (
                                 <div key={booking._id} className="border rounded-lg p-4 mt-4">
                                     <p><strong>Room:</strong> {booking.room.number} ({booking.room.type})</p>
-                                    <p><strong>Start Date:</strong> {new Date(booking.startDate).toLocaleDateString()}</p>
-                                    <p><strong>End Date:</strong> {new Date(booking.endDate).toLocaleDateString()}</p>
+                                    <p><strong>Start Date:</strong> {format(new Date(booking.startDate), 'dd MMM yyyy')}</p>
+                                    <p><strong>End Date:</strong> {format(new Date(booking.endDate), 'dd MMM yyyy')}</p>
+                                    <p><strong>Total Price:</strong> ${booking.totalPrice.toFixed(2)}</p>
                                     <p><strong>Status:</strong> {booking.status}</p>
                                     {booking.services && booking.services.length > 0 && (
                                         <div className="mt-4">
-                                            <h3 className="text-xl font-bold">Services</h3>
-                                            {booking.services.map((service) => (
-                                                <p key={service._id}>{service.name} - ${service.price}</p>
-                                            ))}
-                                        </div>
+                                        <h3 className="text-xl font-bold">Services</h3>
+                                        {booking.services.map((service) => (
+                                            <p key={service._id}>{service.name} - ${service.price.toFixed(2)}</p>
+                                        ))}
+                                    </div>
                                     )}
                                 </div>
                             ))}
